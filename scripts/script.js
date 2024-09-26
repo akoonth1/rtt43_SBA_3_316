@@ -9,7 +9,7 @@ window.onload = function() {
     localStorage.setItem('Moves', 0);
     console.log('Moves reset to 0 on page refresh');
 };
-
+//Cached element by ID
 let main_body = document.getElementById('main_body');
 
 
@@ -29,7 +29,7 @@ containerDiv.style.display = 'flex';
 containerDiv.style.flexDirection = 'row';
 containerDiv.style.justifyContent = 'center';
 containerDiv.style.alignItems = 'center';
-containerDiv.style.marginTop = '20px';
+containerDiv.style.marginTop = '10px';
 
 
 let div_window = document.getElementsByTagName('div');
@@ -44,7 +44,7 @@ let divWindowWidth = window.clientWidth;
 let divWindowHeight = window.clientHeight;
 
 
-let d_window2 = div_window[0].cloneNode(true);
+let d_window2 = div_window[0].cloneNode(true);  //clone the first div window
 let d_window3 = div_window[0].cloneNode(true);
 containerDiv.appendChild(div_window[0]);
 containerDiv.appendChild(d_window2);
@@ -55,20 +55,19 @@ document.body.appendChild(containerDiv);
 
 
 
-let form = document.createElement('form');
+let form = document.createElement('form');  //create form element
 
-main_body.appendChild(form);
-
+main_body.appendChild(form); //append form to the body
 let input = document.createElement('input');
 input.setAttribute('type', 'text');
 input.setAttribute('placeholder', 'Enter your name');
 input.setAttribute('class', 'form-control');
 input.setAttribute('id', 'name');
-input.setAttribute('required', 'true');
+input.setAttribute('required', 'true');  //set the input as required field for html validation
 
 document.querySelector('form').appendChild(input);
 
-console.log(document.querySelector('form').childNodes[0]);
+//console.log(document.querySelector('form').childNodes[0]);
 
 let button = document.createElement('button')
 
@@ -118,7 +117,7 @@ let number_reference = document.getElementById('number_of_blocks').value;
 
 
 let h2 = document.createElement('h2');
-h2.textContent = 'Moves: ' + localStorage.getItem('Moves');
+h2.textContent = 'Moves: ' + localStorage.getItem('Moves');  //modify the text content of the h2 element
 document.body.appendChild(h2);
 
 
@@ -139,9 +138,9 @@ function square(size, color,divnum = 0) {
    
 
 
-  
-    // Append the square to the div_window
+    //Cached element using querySelectorAll
      let div_window = document.querySelectorAll('.viewer');
+     
    // let div_window = Array.from(containerDiv.querySelectorAll('.viewer'));
 
     
@@ -200,7 +199,7 @@ function updateBlocks(selectedValue) {
 
 
 
-number_of_blocks.addEventListener('change', function(e) {
+number_of_blocks.addEventListener('change', function(e) { //event listener for the number of blocks input
     let selectedValue = parseInt(e.target.value);
     //console.log('Number of blocks selected:', selectedValue);
     updateBlocks(selectedValue);
@@ -223,18 +222,19 @@ let div_window_1 = document.querySelectorAll('.viewer');
 console.log(div_window_1);
 console.log(div_window);
 
+//I think this counts as element modification from user interaction
 div_window_1.forEach(viewer => {
-    viewer.addEventListener('click', function(e) {
+    viewer.addEventListener('click', function(e) { //event listener for the viewer
         console.log(e.target);
 
 
-       if (e.target != viewer.firstChild) return;
+       if (e.target != viewer.firstChild) return; //firstChild relation to the viewer
         e.preventDefault();
         console.log('Viewer was clicked');
 
 
         if (e.target.classList.contains('square')){
-            let backgroundColor = window.getComputedStyle(e.target).backgroundColor;
+            let backgroundColor = window.getComputedStyle(e.target).backgroundColor;  //get the background color of the square
             let size = window.getComputedStyle(e.target).width;
             let pixelWidth = parseInt(size); 
            let new_place = e.target.classList[2];
@@ -258,7 +258,7 @@ div_window_1.forEach(viewer => {
 
     //    let new_square = square(size,backgroundColor,new_place);
 
-
+        //Iterated over collection of elements to check for placement conditions
     let canPlace = true;
     viewer.childNodes.forEach(child => {
         if (child.classList && child.classList.contains('square')) {
@@ -274,16 +274,13 @@ div_window_1.forEach(viewer => {
         let new_square = square(size, backgroundColor, new_place);
     } else {
         //console.log('Cannot place a larger square on top of a smaller square. Restarting game...');
-        window.alert('Cannot place a larger square on top of a smaller square. Restarting game...');
-        window.location.reload(); 
+        window.alert('Cannot place a larger square on top of a smaller square. Restarting game...');  //BOM Method
+        window.location.reload();  //BOM Method
         localStorage.setItem('Moves', 0);
     }
 
 }
        
-       
-       
-        // e.target.remove();
 
         document.body.removeChild(document.getElementsByTagName('h2')[0]);
         let h2 = document.createElement('h2');
@@ -294,16 +291,15 @@ form.insertAdjacentElement('afterend', h2);
     });
 });
 
-//console.log('Move tester ggg ' + localStorage.getItem('Moves'));
 
-
-//console.log('Move tester more' + Moves);
+//Event listener for the form
 form.addEventListener('submit', function(e){
     e.preventDefault();
     let inputValue = document.getElementById('name').value;
     let name = input.value;
-    //console.log(inputValue+ ' is the input value');
+
     
+    //Dom event based validation for the name input
     try {
         // Validate the name input
         if (/[^a-zA-Z0-9 ]/.test(name)) {
@@ -314,6 +310,7 @@ form.addEventListener('submit', function(e){
 
         let h1 = document.getElementsByTagName("h1")[0]
         h1.innerHTML = localStorage.getItem('name') +`'s` +' Tower of Hanoi';
+        h1.style.color = 'DarkBlue'; //change the color of the h1 element on interaction with user.
         let displayDiv = document.createElement('div');
 
 displayDiv.setAttribute('id', 'displayDiv');
