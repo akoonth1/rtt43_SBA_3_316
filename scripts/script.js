@@ -6,8 +6,8 @@
 document.getElementsByTagName('H1')[0].style.color = 'green';
 
 window.onload = function() {
-    localStorage.setItem('score', 0);
-    console.log('Score reset to 0 on page refresh');
+    localStorage.setItem('Moves', 0);
+    console.log('Moves reset to 0 on page refresh');
 };
 
 let main_body = document.getElementById('main_body');
@@ -78,11 +78,50 @@ button.setAttribute('class', 'btn btn-primary');
 
 document.querySelector('form').appendChild(button);
 
+
+
+document.querySelector('form').style.display = 'flex';
+document.querySelector('form').style.justifyContent = 'space-evenly';
+let number_of_blocks = document.createElement('input');
+number_of_blocks.setAttribute('id', 'number_of_blocks');
+number_of_blocks.setAttribute('class', 'form-control');
+number_of_blocks.setAttribute('required', 'true');
+document.querySelector('form').appendChild(number_of_blocks);
+document.querySelector('form').childNodes[2].style.marginTop = '0px';
+number_of_blocks.setAttribute('type', 'number');
+number_of_blocks.setAttribute('min', '3');
+number_of_blocks.setAttribute('max', '5');
+number_of_blocks.setAttribute('value', '3');
+number_of_blocks.setAttribute('step', '1');
+let label = document.createElement('label');
+label.setAttribute('for', 'number_of_blocks');
+label.textContent = 'number of blocks: ';
+document.querySelector('form').insertBefore(label, number_of_blocks);
+
+
+
+// let options = ['3', '4', '5'];
+// options.forEach(optionValue => {
+//     let option = document.createElement('option');
+//     option.textContent = optionValue;
+//     option.value = optionValue;
+//     number_of_blocks.appendChild(option);
+// });
+
+
+// document.createElement('label').textContent = 'Select number of blocks';
+// document.createElement('option').textContent = '3';
+// document.createElement('option').textContent = '4';
+// document.createElement('option').textContent = '5';
+// document.querySelector('form').childNodes[2].appendChild(document.createElement('label'));
+//document.querySelector( );
+
+
 //localStorage.setItem('name', 
 
 //window.alert('Hello World');
 
-let score = 0;
+let Moves = 0;
 
 form.addEventListener('change', function(e){
     let inputValue = document.getElementById('name').value;
@@ -91,7 +130,7 @@ form.addEventListener('change', function(e){
 
     localStorage.setItem('name', inputValue);
     localStorage.setItem('time', new Date());
-    localStorage.setItem('score', score);
+    localStorage.setItem('Moves', Moves);
 
 let h1 = document.getElementsByTagName("h1")[0]
 h1.innerHTML = ' Tower of Hanoi ' + localStorage.getItem('name');
@@ -109,18 +148,18 @@ form.addEventListener('submit', function(e){
     console.log('Form Submitted');
     console.log('Hello ' + inputValue);
     console.log('Time: ' + new Date());
-    console.log('Score: ' + score);
-    console.log('Score: ' + localStorage.getItem('score'));
+    console.log('Moves: ' + Moves);
+    console.log('Moves: ' + localStorage.getItem('Moves'));
     console.log('Time: ' + localStorage.getItem('time'));
     form.remove();
 });
 
 
-//document.createElement('h2').textContent = 'Score: '  + localStorage.getItem('score');
+//document.createElement('h2').textContent = 'Moves: '  + localStorage.getItem('Moves');
 //document.createElement('h2').textContent = 'Time: ' + localStorage.getItem('time');
 
 let h2 = document.createElement('h2');
-h2.textContent = 'Score: ' + localStorage.getItem('score');
+h2.textContent = 'Moves: ' + localStorage.getItem('Moves');
 document.body.appendChild(h2);
 
 
@@ -160,11 +199,11 @@ function square(size, color,divnum = 0) {
     // document.addEventListener('click', function(e) {
     //     e.preventDefault();
     //     console.log('Square was clicked');
-    //     // Example: Increment the score and update local storage
-    //     let score = parseInt(localStorage.getItem('score')) || 0;
-    //     score++;
-    //     localStorage.setItem('score', score);
-    //     console.log('Score: ' + score);
+    //     // Example: Increment the Moves and update local storage
+    //     let Moves = parseInt(localStorage.getItem('Moves')) || 0;
+    //     Moves++;
+    //     localStorage.setItem('Moves', Moves);
+    //     console.log('Moves: ' + Moves);
     // });
 
     return ;
@@ -175,7 +214,7 @@ let yellow = square('150px', 'yellow', 0);
 let red = square('120px', 'red', 0);
 let green = square('90px', 'green', 0);
 let blue = square('60px', 'blue', 0);
-
+let orange = square('30px', 'orange', 0);
 //let div_window_1 = document.querySelectorAll('.viewer');
 
 //console.log(div_window_1 + ' is the div_window_1');
@@ -185,11 +224,11 @@ let blue = square('60px', 'blue', 0);
 //    // if (e.target.nodeName !=="A") return; 
 //     e.preventDefault();
 //     console.log('Square was clicked');
-//     // Example: Increment the score and update local storage
-//     let score = parseInt(localStorage.getItem('score')) || 0;
-//     score++;
-//     localStorage.setItem('score', score);
-//     console.log('Score: ' + score);
+//     // Example: Increment the Moves and update local storage
+//     let Moves = parseInt(localStorage.getItem('Moves')) || 0;
+//     Moves++;
+//     localStorage.setItem('Moves', Moves);
+//     console.log('Moves: ' + Moves);
 //     //square.remove();
 
 //     //square();
@@ -200,7 +239,12 @@ console.log(div_window_1 + ' is the div_window_1');
 
 div_window_1.forEach(viewer => {
     viewer.addEventListener('click', function(e) {
-       // if (!e.target.classList.contains('viewer'||'square')) return;
+        console.log(e.target);
+
+        console.log(viewer.firstChild);
+        console.log(viewer.nextSibling);
+
+       if (e.target != viewer.firstChild) return;
         e.preventDefault();
         console.log('Viewer was clicked');
 
@@ -208,25 +252,58 @@ div_window_1.forEach(viewer => {
         if (e.target.classList.contains('square')){
             let backgroundColor = window.getComputedStyle(e.target).backgroundColor;
             let size = window.getComputedStyle(e.target).width;
+            let pixelWidth = parseInt(size); 
            let new_place = e.target.classList[2];
            new_place = Number(new_place)+1;
 
-           let score = parseInt(localStorage.getItem('score')) || 0;
-           score++;
-           localStorage.setItem('score', score);
-           console.log('Score: ' + score);
+
+           
+           let Moves = parseInt(localStorage.getItem('Moves')) || 0;
+           Moves++;
+           localStorage.setItem('Moves', Moves);
+           console.log('Moves: ' + Moves);
         if (new_place > 2){
             new_place = 0;
         }
        
-            e.target.remove();
 
-        let new_square = square(size,backgroundColor,new_place);
+
+    //         e.target.remove();
+
+    //    let new_square = square(size,backgroundColor,new_place);
+
+
+    let canPlace = true;
+    viewer.childNodes.forEach(child => {
+        if (child.classList && child.classList.contains('square')) {
+            let childWidth = parseInt(window.getComputedStyle(child).width);
+            if (pixelWidth > childWidth) {
+                canPlace = false;
+            }
+        }
+    });
+
+    if (canPlace) {
+        e.target.remove();
+        let new_square = square(size, backgroundColor, new_place);
+    } else {
+        console.log('Cannot place a larger square on top of a smaller square.');
+        window.alert('Cannot place a larger square on top of a smaller square.');
+        window.location.reload(); 
+    }
+
+
+
+
+
+
+
+       
         }
         //e.target.remove();
         document.body.removeChild(document.getElementsByTagName('h2')[0]);
         let h2 = document.createElement('h2');
-h2.textContent = 'Score: ' + localStorage.getItem('score');
+h2.textContent = 'Moves: ' + localStorage.getItem('Moves');
 document.body.appendChild(h2);
 
     });
