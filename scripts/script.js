@@ -72,7 +72,7 @@ console.log(document.querySelector('form').childNodes[0]);
 
 let button = document.createElement('button')
 
-button.innerHTML = 'Submit';
+button.innerHTML = 'Submit Score';
 button.setAttribute('type', 'submit');
 button.setAttribute('class', 'btn btn-primary');
 
@@ -82,6 +82,11 @@ document.querySelector('form').appendChild(button);
 
 document.querySelector('form').style.display = 'flex';
 document.querySelector('form').style.justifyContent = 'space-evenly';
+
+
+
+
+
 let number_of_blocks = document.createElement('input');
 number_of_blocks.setAttribute('id', 'number_of_blocks');
 number_of_blocks.setAttribute('class', 'form-control');
@@ -98,65 +103,19 @@ label.setAttribute('for', 'number_of_blocks');
 label.textContent = 'number of blocks: ';
 document.querySelector('form').insertBefore(label, number_of_blocks);
 
+let number_reference = document.getElementById('number_of_blocks').value;
 
 
-// let options = ['3', '4', '5'];
-// options.forEach(optionValue => {
-//     let option = document.createElement('option');
-//     option.textContent = optionValue;
-//     option.value = optionValue;
-//     number_of_blocks.appendChild(option);
-// });
+ let Moves = 0;
 
 
-// document.createElement('label').textContent = 'Select number of blocks';
-// document.createElement('option').textContent = '3';
-// document.createElement('option').textContent = '4';
-// document.createElement('option').textContent = '5';
-// document.querySelector('form').childNodes[2].appendChild(document.createElement('label'));
-//document.querySelector( );
 
 
-//localStorage.setItem('name', 
-
-//window.alert('Hello World');
-
-let Moves = 0;
-
-form.addEventListener('change', function(e){
-    let inputValue = document.getElementById('name').value;
-//    console.log(e.target);
-//    console.log(inputValue);
-
-    localStorage.setItem('name', inputValue);
-    localStorage.setItem('time', new Date());
-    localStorage.setItem('Moves', Moves);
-
-let h1 = document.getElementsByTagName("h1")[0]
-h1.innerHTML = ' Tower of Hanoi ' + localStorage.getItem('name');
-
-});
 
 
-console.log(localStorage.getItem('name')+ ' is the name stored in local storage');
 
 
-form.addEventListener('submit', function(e){
-    e.preventDefault();
-    let inputValue = document.getElementById('name').value;
-    console.log(inputValue);
-    console.log('Form Submitted');
-    console.log('Hello ' + inputValue);
-    console.log('Time: ' + new Date());
-    console.log('Moves: ' + Moves);
-    console.log('Moves: ' + localStorage.getItem('Moves'));
-    console.log('Time: ' + localStorage.getItem('time'));
-    form.remove();
-});
 
-
-//document.createElement('h2').textContent = 'Moves: '  + localStorage.getItem('Moves');
-//document.createElement('h2').textContent = 'Time: ' + localStorage.getItem('time');
 
 let h2 = document.createElement('h2');
 h2.textContent = 'Moves: ' + localStorage.getItem('Moves');
@@ -174,75 +133,100 @@ function square(size, color,divnum = 0) {
 
     // Set some properties for the square
     square.style.width = size;
-    square.style.height = '50px';
+    square.style.height = '60px';
     square.style.backgroundColor = color;
     square.classList.add('square', divnum);
    
 
 
-    // Set random position for the square
-    // let randomX = Math.floor(Math.random() * (window.innerWidth - 50));
-    // let randomY = Math.floor(Math.random() * (window.innerHeight- 50));
-    // square.style.left = randomX + 'px';
-    // square.style.top = randomY + 'px';
-
+  
     // Append the square to the div_window
      let div_window = document.querySelectorAll('.viewer');
    // let div_window = Array.from(containerDiv.querySelectorAll('.viewer'));
 
-    console.log(div_window);
+    
     div_window[divnum].insertBefore(square, div_window[divnum].childNodes[0]);
 
     //Add click event listener to the square
 
 
-    // document.addEventListener('click', function(e) {
-    //     e.preventDefault();
-    //     console.log('Square was clicked');
-    //     // Example: Increment the Moves and update local storage
-    //     let Moves = parseInt(localStorage.getItem('Moves')) || 0;
-    //     Moves++;
-    //     localStorage.setItem('Moves', Moves);
-    //     console.log('Moves: ' + Moves);
-    // });
-
     return ;
 }
 
+
+
+number_reference 
+
+let squares = [
+    { size: '150px', color: 'yellow', divnum: 0 },
+    { size: '120px', color: 'red', divnum: 0 },
+    { size: '90px', color: 'green', divnum: 0 },
+    { size: '60px', color: 'blue', divnum: 0 },
+    { size: '30px', color: 'orange', divnum: 0 }
+];
+
+for (let i in squares) {
+    if (i >= number_reference) break;
+    let squareProps = squares[i];
+    square(squareProps.size, squareProps.color, squareProps.divnum);
+    
+}
+
+function updateBlocks(selectedValue) {
+    try {
+
+     
+        // Validate the number of blocks
+        if (selectedValue < 3 || selectedValue > 5) {
+            throw new Error('Number of blocks must be between 3 and 5.');
+        }
+
+        
+        // Clear existing squares
+        document.querySelectorAll('.square').forEach(square => square.remove());
+
+        // Call the square function to create and append squares based on the selected value
+        let colors = ['yellow', 'red', 'green', 'blue', 'orange'];
+        let sizes = ['150px', '120px', '90px', '60px', '30px'];
+        for (let i = 0; i < selectedValue; i++) {
+            square(sizes[i], colors[i], 0);
+        }
+    } catch (error) {
+        console.error(error.message);
+        alert(error.message);
+    }
+}
+
+
+
+
+number_of_blocks.addEventListener('change', function(e) {
+    let selectedValue = parseInt(e.target.value);
+    //console.log('Number of blocks selected:', selectedValue);
+    updateBlocks(selectedValue);
+    localStorage.setItem('Number of Blocks', selectedValue);
+});
+
+
+
+
 // Call the square function to create and append a square
-let yellow = square('150px', 'yellow', 0);
-let red = square('120px', 'red', 0);
-let green = square('90px', 'green', 0);
-let blue = square('60px', 'blue', 0);
-let orange = square('30px', 'orange', 0);
-//let div_window_1 = document.querySelectorAll('.viewer');
+// let yellow = square('150px', 'yellow', 0);
+// let red = square('120px', 'red', 0);
+// let green = square('90px', 'green', 0);
+// let blue = square('60px', 'blue', 0);
+// let orange = square('30px', 'orange', 0);
+// //let div_window_1 = document.querySelectorAll('.viewer');
 
-//console.log(div_window_1 + ' is the div_window_1');
 
-//     div_window_1.addEventListener('click', function(e) {
-//         if (!e.target.classList.contains('viewer')) return;
-//    // if (e.target.nodeName !=="A") return; 
-//     e.preventDefault();
-//     console.log('Square was clicked');
-//     // Example: Increment the Moves and update local storage
-//     let Moves = parseInt(localStorage.getItem('Moves')) || 0;
-//     Moves++;
-//     localStorage.setItem('Moves', Moves);
-//     console.log('Moves: ' + Moves);
-//     //square.remove();
-
-//     //square();
-// }
-// );
 let div_window_1 = document.querySelectorAll('.viewer');
-console.log(div_window_1 + ' is the div_window_1');
+console.log(div_window_1);
+console.log(div_window);
 
 div_window_1.forEach(viewer => {
     viewer.addEventListener('click', function(e) {
         console.log(e.target);
 
-        console.log(viewer.firstChild);
-        console.log(viewer.nextSibling);
 
        if (e.target != viewer.firstChild) return;
         e.preventDefault();
@@ -261,14 +245,16 @@ div_window_1.forEach(viewer => {
            let Moves = parseInt(localStorage.getItem('Moves')) || 0;
            Moves++;
            localStorage.setItem('Moves', Moves);
-           console.log('Moves: ' + Moves);
+          // console.log('Move and test: ' + Moves);
+
+
         if (new_place > 2){
             new_place = 0;
         }
        
 
 
-    //         e.target.remove();
+            e.target.remove();
 
     //    let new_square = square(size,backgroundColor,new_place);
 
@@ -287,33 +273,93 @@ div_window_1.forEach(viewer => {
         e.target.remove();
         let new_square = square(size, backgroundColor, new_place);
     } else {
-        console.log('Cannot place a larger square on top of a smaller square.');
-        window.alert('Cannot place a larger square on top of a smaller square.');
+        //console.log('Cannot place a larger square on top of a smaller square. Restarting game...');
+        window.alert('Cannot place a larger square on top of a smaller square. Restarting game...');
         window.location.reload(); 
+        localStorage.setItem('Moves', 0);
     }
 
-
-
-
-
-
-
+}
        
-        }
-        //e.target.remove();
+       
+       
+        // e.target.remove();
+
         document.body.removeChild(document.getElementsByTagName('h2')[0]);
         let h2 = document.createElement('h2');
-h2.textContent = 'Moves: ' + localStorage.getItem('Moves');
+h2.textContent = 'Move: ' + localStorage.getItem('Moves');
 document.body.appendChild(h2);
+form.insertAdjacentElement('afterend', h2);
 
     });
 });
 
+//console.log('Move tester ggg ' + localStorage.getItem('Moves'));
 
 
-// document.addEventListener('mousemove', (event) => {
-//     const x = event.clientX;
-//     const y = event.clientY;
-  
-//     console.log(`Mouse X: ${x}, Mouse Y: ${y}`);
-//   });
+//console.log('Move tester more' + Moves);
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    let inputValue = document.getElementById('name').value;
+    let name = input.value;
+    //console.log(inputValue+ ' is the input value');
+    
+    try {
+        // Validate the name input
+        if (/[^a-zA-Z0-9 ]/.test(name)) {
+            throw new Error('Name cannot contain special characters.');
+        }else{
+            //for name update
+            localStorage.setItem('name', inputValue);
+
+        let h1 = document.getElementsByTagName("h1")[0]
+        h1.innerHTML = localStorage.getItem('name') +`'s` +' Tower of Hanoi';
+        let displayDiv = document.createElement('div');
+
+displayDiv.setAttribute('id', 'displayDiv');
+displayDiv.style.margin = '20px';
+displayDiv.style.backgroundColor = 'black';
+displayDiv.style.color = 'white';
+displayDiv.style.padding = '10px';
+displayDiv.style.height ='fit-content';
+main_body.appendChild(displayDiv);
+displayDiv.innerHTML = `<p>Name : ${localStorage.getItem('name')}| Number of Blocks : ${number_of_blocks.value} |   Moves : ${localStorage.getItem('Moves')}</p>`;
+localStorage.setItem('displayDivContent', displayDiv.innerHTML);
+
+
+}
+    } catch (error) {
+        console.error(error.message);
+        alert(error.message);
+    }
+
+
+});
+
+window.addEventListener('load', function() {
+    let displayDivContent = localStorage.getItem('displayDivContent');
+    if (displayDivContent) {
+        let displayDiv = document.getElementById('displayDiv');
+        if (!displayDiv) {
+            displayDiv = document.createElement('div');
+            displayDiv.setAttribute('id', 'displayDiv');
+            displayDiv.style.margin = '20px';
+            displayDiv.style.backgroundColor = 'black';
+            displayDiv.style.color = 'white';
+            displayDiv.style.padding = '10px';
+            displayDiv.style.height = 'fit-content';
+            main_body.appendChild(displayDiv);
+        }
+        displayDiv.innerHTML = displayDivContent;
+    }
+});
+
+
+
+console.log(div_window);
+
+div_window_1.forEach(viewer => {
+    viewer.addEventListener('onchange', function(e) {
+        console.log(e.target);
+    });
+});
