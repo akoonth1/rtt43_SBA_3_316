@@ -104,13 +104,9 @@ document.querySelector('form').insertBefore(label, number_of_blocks);
 
 let number_reference = document.getElementById('number_of_blocks').value;
 
+console.log(number_reference);
 
  let Moves = 0;
-
-
-
-
-
 
 
 
@@ -157,11 +153,11 @@ function square(size, color,divnum = 0) {
 number_reference 
 
 let squares = [
-    { size: '150px', color: 'yellow', divnum: 0 },
-    { size: '120px', color: 'red', divnum: 0 },
-    { size: '90px', color: 'green', divnum: 0 },
-    { size: '60px', color: 'blue', divnum: 0 },
-    { size: '30px', color: 'orange', divnum: 0 }
+    { size: '150px', color: 'rgb(255, 255, 0)', divnum: 0 },
+    { size: '120px', color: 'rgb(255, 0, 0)', divnum: 0 },
+    { size: '90px', color: 'rgb(0, 128, 0)', divnum: 0 },
+    { size: '60px', color: 'rgb(0, 0, 255)' , divnum: 0 },
+    { size: '30px', color:  'rgb(255, 165, 0)', divnum: 0 }
 ];
 
 for (let i in squares) {
@@ -185,7 +181,7 @@ function updateBlocks(selectedValue) {
         document.querySelectorAll('.square').forEach(square => square.remove());
 
         // Call the square function to create and append squares based on the selected value
-        let colors = ['yellow', 'red', 'green', 'blue', 'orange'];
+       let colors = ['yellow', 'red', 'green', 'blue', 'orange'];
         let sizes = ['150px', '120px', '90px', '60px', '30px'];
         for (let i = 0; i < selectedValue; i++) {
             square(sizes[i], colors[i], 0);
@@ -204,6 +200,8 @@ number_of_blocks.addEventListener('change', function(e) { //event listener for t
     //console.log('Number of blocks selected:', selectedValue);
     updateBlocks(selectedValue);
     localStorage.setItem('Number of Blocks', selectedValue);
+    // win_state = (div_window_1[0].innerHTML);
+    // console.log(win_state);
 });
 
 
@@ -219,13 +217,18 @@ number_of_blocks.addEventListener('change', function(e) { //event listener for t
 
 
 let div_window_1 = document.querySelectorAll('.viewer');
-console.log(div_window_1);
+let win_state = (div_window_1[0].innerHTML);
 console.log(div_window);
 
 //I think this counts as element modification from user interaction
 div_window_1.forEach(viewer => {
     viewer.addEventListener('click', function(e) { //event listener for the viewer
-        console.log(e.target);
+       // console.log(e.target);
+
+//        console.log(div_window_1[1].innerHTML);
+// console.log(viewer.innerHTML);
+// console.log(win_state);
+       // if(div_window_1[1].innerHTML == win_state){window.alert('You have won the game!');}  //BOM Method
 
 
        if (e.target != viewer.firstChild) return; //firstChild relation to the viewer
@@ -288,7 +291,19 @@ h2.textContent = 'Move: ' + localStorage.getItem('Moves');
 document.body.appendChild(h2);
 form.insertAdjacentElement('afterend', h2);
 
-    });
+
+// div_window_1.forEach((viewer, index) => {
+//     console.log(`Viewer ${index + 1}:`);
+//     viewer.childNodes.forEach(child => {
+//         if (child.classList && child.classList.contains('square')) {
+//             console.log(`Square: ${child.classList}`);
+//         }
+//     });
+// });
+  
+});
+
+
 });
 
 
@@ -350,13 +365,18 @@ window.addEventListener('load', function() {
         displayDiv.innerHTML = displayDivContent;
     }
 });
+// Debugging localStorage
+// for (var i = 0; i < localStorage.length; i++){
+//     // do something with localStorage.getItem(localStorage.key(i));
+//     console.log(localStorage.getItem(localStorage.key(i)));
+// }
 
+//console.log(div_window);
 
-
-console.log(div_window);
+// console.log(win_state)
 
 div_window_1.forEach(viewer => {
     viewer.addEventListener('onchange', function(e) {
-        console.log(e.target);
+        console.log(e.target + ' was clicked again');
     });
 });
