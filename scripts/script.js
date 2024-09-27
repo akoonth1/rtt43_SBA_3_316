@@ -12,7 +12,7 @@ window.onload = function() {
 //Cached element by ID
 let main_body = document.getElementById('main_body');
 
-
+let winner = false
 main_body.classList.add('text-center');
 
 main_body.style.display = 'flex';
@@ -181,7 +181,7 @@ function updateBlocks(selectedValue) {
         document.querySelectorAll('.square').forEach(square => square.remove());
 
         // Call the square function to create and append squares based on the selected value
-       let colors = ['yellow', 'red', 'green', 'blue', 'orange'];
+       let colors = ['rgb(255, 255, 0)', 'rgb(255, 0, 0)', 'rgb(0, 128, 0)' , 'rgb(0, 0, 255)', 'rgb(255, 165, 0)' ];
         let sizes = ['150px', '120px', '90px', '60px', '30px'];
         for (let i = 0; i < selectedValue; i++) {
             square(sizes[i], colors[i], 0);
@@ -197,43 +197,48 @@ function updateBlocks(selectedValue) {
 
 number_of_blocks.addEventListener('change', function(e) { //event listener for the number of blocks input
     let selectedValue = parseInt(e.target.value);
-    //console.log('Number of blocks selected:', selectedValue);
     updateBlocks(selectedValue);
     localStorage.setItem('Number of Blocks', selectedValue);
-    // win_state = (div_window_1[0].innerHTML);
-    // console.log(win_state);
+    let orderedColors = getOrderedColors();
+    console.log(orderedColors[0].colors);
+    win_match = orderedColors[0].colors;
+  
 });
 
 
 
-
-// Call the square function to create and append a square
-// let yellow = square('150px', 'yellow', 0);
-// let red = square('120px', 'red', 0);
-// let green = square('90px', 'green', 0);
-// let blue = square('60px', 'blue', 0);
-// let orange = square('30px', 'orange', 0);
-// //let div_window_1 = document.querySelectorAll('.viewer');
-
-
 let div_window_1 = document.querySelectorAll('.viewer');
 let win_state = (div_window_1[0].innerHTML);
-console.log(div_window);
+console.log(div_window.value);
+
+function getOrderedColors() {
+    let orderedColors = [];
+    div_window_1.forEach((viewer, index) => {
+        let viewerColors = [];
+        viewer.childNodes.forEach(child => {
+            if (child.classList && child.classList.contains('square')) {
+                let backgroundColor = window.getComputedStyle(child).backgroundColor;
+                viewerColors.push(backgroundColor);
+            }
+        });
+        orderedColors.push({ viewer: index + 1, colors: viewerColors });
+    });
+    return orderedColors;
+}
+let orderedColors = getOrderedColors();
+console.log(orderedColors[0].colors);
+let win_match = orderedColors[0].colors;
+
+
 
 //I think this counts as element modification from user interaction
 div_window_1.forEach(viewer => {
     viewer.addEventListener('click', function(e) { //event listener for the viewer
-       // console.log(e.target);
-
-//        console.log(div_window_1[1].innerHTML);
-// console.log(viewer.innerHTML);
-// console.log(win_state);
-       // if(div_window_1[1].innerHTML == win_state){window.alert('You have won the game!');}  //BOM Method
 
 
        if (e.target != viewer.firstChild) return; //firstChild relation to the viewer
         e.preventDefault();
-        console.log('Viewer was clicked');
+       // console.log('Viewer was clicked');
 
 
         if (e.target.classList.contains('square')){
@@ -292,14 +297,50 @@ document.body.appendChild(h2);
 form.insertAdjacentElement('afterend', h2);
 
 
-// div_window_1.forEach((viewer, index) => {
-//     console.log(`Viewer ${index + 1}:`);
-//     viewer.childNodes.forEach(child => {
-//         if (child.classList && child.classList.contains('square')) {
-//             console.log(`Square: ${child.classList}`);
-//         }
-//     });
-// });
+function getOrderedColors() {
+    let orderedColors = [];
+    div_window_1.forEach((viewer, index) => {
+        let viewerColors = [];
+        viewer.childNodes.forEach(child => {
+            if (child.classList && child.classList.contains('square')) {
+                let backgroundColor = window.getComputedStyle(child).backgroundColor;
+                viewerColors.push(backgroundColor);
+            }
+        });
+        orderedColors.push({ viewer: index + 1, colors: viewerColors });
+    });
+    return orderedColors;
+}
+let orderedColors = getOrderedColors();
+console.log(orderedColors[1].colors[0]);
+console.log(win_match);
+//console.log(orderedColors[1].colors[0] == win_match[0]);
+console.log(orderedColors[1].colors == win_match);
+
+function arraysEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) return false;
+    }
+    return true;
+}
+
+if(arraysEqual(orderedColors[1].colors, win_match)){
+window.confirm('You have won the game! Please submit your score.');  //BOM Method
+document.body.style.backgroundColor = 'gold'; //change on win
+//console.log(arraysEqual(orderedColors[1].colors, win_match));
+winner = true;
+}
+
+
+
+
+
+
+
+
+//orderedColors[1].colors == win_match
+
   
 });
 
@@ -323,20 +364,29 @@ form.addEventListener('submit', function(e){
             //for name update
             localStorage.setItem('name', inputValue);
 
+         if (winner == true){
+    
+
         let h1 = document.getElementsByTagName("h1")[0]
         h1.innerHTML = localStorage.getItem('name') +`'s` +' Tower of Hanoi';
         h1.style.color = 'DarkBlue'; //change the color of the h1 element on interaction with user.
         let displayDiv = document.createElement('div');
 
-displayDiv.setAttribute('id', 'displayDiv');
-displayDiv.style.margin = '20px';
-displayDiv.style.backgroundColor = 'black';
-displayDiv.style.color = 'white';
-displayDiv.style.padding = '10px';
-displayDiv.style.height ='fit-content';
-main_body.appendChild(displayDiv);
-displayDiv.innerHTML = `<p>Name : ${localStorage.getItem('name')}| Number of Blocks : ${number_of_blocks.value} |   Moves : ${localStorage.getItem('Moves')}</p>`;
-localStorage.setItem('displayDivContent', displayDiv.innerHTML);
+        displayDiv.setAttribute('id', 'displayDiv');
+        displayDiv.style.margin = '20px';
+        displayDiv.style.backgroundColor = 'black';
+        displayDiv.style.color = 'white';
+        displayDiv.style.padding = '10px';
+        displayDiv.style.height ='fit-content';
+        main_body.appendChild(displayDiv);
+        displayDiv.innerHTML = `<p>Name : ${localStorage.getItem('name')}| Number of Blocks : ${number_of_blocks.value} |   Moves : ${localStorage.getItem('Moves')}</p>`;
+        localStorage.setItem('displayDivContent', displayDiv.innerHTML);
+        //window.location.reload();
+        winner = false;
+         }
+         else{
+             throw new Error('You have not won the game yet. Please try again.');
+         }
 
 
 }
@@ -373,7 +423,7 @@ window.addEventListener('load', function() {
 
 //console.log(div_window);
 
-// console.log(win_state)
+
 
 div_window_1.forEach(viewer => {
     viewer.addEventListener('onchange', function(e) {
