@@ -6,7 +6,7 @@
 
 ### Project Description
 
-This project is a small-scale implementation of the Tower of Hanoi puzzle. You can choose between 3-5 disks, with 3 being the default value. The goal of the game is to move the stack of disks to another location without ever placing a disk of greater width on top of a disk with a smaller width. The game will reset after an illegal move is executed and that illegal disk is then tried to move again. Scores can only be submitted once you've won the game.
+This project is a small-scale implementation of the Tower of Hanoi puzzle. You can choose between 3-5 disks, with 3 being the default value. The goal of the game is to move the stack of disks to another location without ever placing a disk of greater width on top of a disk with a smaller width. The game will reset after an illegal move is executed and that illegal disk is then tried to move again. Scores can only be submitted once you've won the game. Only the top disk on a pile may be moved.
 
 [GitHub Repository](https://github.com/akoonth1/rtt43_SBA_3_316 "GitHub SBA3")
 

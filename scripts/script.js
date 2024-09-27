@@ -80,6 +80,7 @@ document.querySelector('form').appendChild(button);
 
 
 document.querySelector('form').style.display = 'flex';
+document.querySelector('form').style.marginTop = '10px';
 document.querySelector('form').style.justifyContent = 'space-evenly';
 
 
@@ -128,8 +129,9 @@ function square(size, color,divnum = 0) {
 
     // Set some properties for the square
     square.style.width = size;
-    square.style.height = '60px';
+    square.style.height = '50px';
     square.style.backgroundColor = color;
+    square.style.padding = '10px';
     square.classList.add('square', divnum);
    
 
